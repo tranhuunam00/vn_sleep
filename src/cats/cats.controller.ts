@@ -11,7 +11,7 @@ import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { Response } from 'express';
-import { Roles } from 'src/common/guard/roles.decorator';
+import { Roles } from 'src/common/decorator/roles.decorator';
 import { ResponseConfigInterceptor } from 'src/common/interceptor/tranform.interceptor';
 
 @Controller('cats')
