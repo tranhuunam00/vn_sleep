@@ -17,7 +17,7 @@ import { ResponseConfigInterceptor } from './common/interceptor/tranform.interce
 
 @Module({
   imports: [CatsModule],
-  controllers: [AppController, CatsController],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,
@@ -33,7 +33,6 @@ import { ResponseConfigInterceptor } from './common/interceptor/tranform.interce
       useClass: ResponseConfigInterceptor,
     },
     AppService,
-    CatsService,
   ],
 })
 export class AppModule implements NestModule {
