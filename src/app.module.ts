@@ -7,7 +7,6 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsController } from './cats/cats.controller';
-import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RolesGuard } from './common/guard/role.guard';
@@ -26,7 +25,6 @@ import configuration from './config/configuration';
       // envFilePath: ['.env.development.local', '.env.development'],
     }),
     MongooseModule.forRoot(process.env.MONGO_DB_URL),
-    CatsModule,
     UserModule,
   ],
   controllers: [AppController],
