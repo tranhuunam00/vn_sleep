@@ -6,7 +6,7 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ required: false })
   username: string;
 
   @Prop()
@@ -20,6 +20,12 @@ export class User {
 
   @Prop({ required: true, enum: ROLE, default: ROLE.user })
   role: string;
+
+  @Prop()
+  googleId: string;
+
+  @Prop()
+  facebookId: string;
 
   @Prop({ default: false })
   isMember: boolean;
