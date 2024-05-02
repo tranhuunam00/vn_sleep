@@ -30,8 +30,7 @@ export class NodeMailerLib {
     const mailOptions = {
       to: data.to,
       subject: data.subject,
-      html: `<h3>Vui lòng ấn vào được link sau có hạn sau 30 phút: <a>${process.env.BE_DOMAIN}/auth/con
-      firm?token=${data.text}</a></h3>`,
+      html: `<a>${process.env.BE_DOMAIN}/auth/confirm?token=${data.text}</a>`,
     };
     await transporter.sendMail(mailOptions, callback);
   }
