@@ -6,23 +6,22 @@ import { LoginDto } from '../dto/login.auth.dto';
 import { comparePw } from '../../common/util/helper';
 import { JwtService } from '@nestjs/jwt';
 import { ConfirmAuthDto } from '../dto/confirm.auth.dto';
-import { MailerService } from '@nestjs-modules/mailer';
 import { User } from '../user/schemas/user.schema';
+import { NodeMailerLib } from 'src/common/util/nodemailer.lib';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly mailerService: MailerService,
   ) {}
 
   async register(data: CreateUserDto) {
-    const { username, password } = data;
+    const { email, password } = data;
     // 1. check có tồn tại tài khoản chưa
     const userExist = await this.userService.findOneByCondition({
       filter: {
-        username,
+        email,
       },
     });
     console.log(userExist);
@@ -39,7 +38,7 @@ export class AuthService {
       user = userExist;
       await this.userService.update(
         { ...data, password: hash, _id: userExist._id },
-        { filter: { username: username } },
+        { filter: { email: email } },
       );
     } else {
       user = await this.userService.create({
@@ -50,7 +49,7 @@ export class AuthService {
     // 4. gửi mail
     const token = await this.jwtService.sign(
       {
-        username: user.username,
+        email: user.email,
         role: user.role,
       },
       {
@@ -59,13 +58,19 @@ export class AuthService {
       },
     );
     try {
-      await this.mailerService.sendMail({
-        to: 'tranhuunam23022000@gmail.com',
-        from: '"Welcome to the fold" <linux@over.windows>', // sender address
-        subject: 'Quotes', // Subject line
-        text: token, // plaintext body
-        html: '',
-      });
+      await NodeMailerLib.send(
+        {
+          to: email,
+          from: 'Xin chào đã đến với VN Sleep', // sender address
+          subject: 'Chấp nhận đăng kí VN SLeep', // Subject line
+          text: token, // plaintext body
+          // html: 'êr',
+        },
+        async (error, response) => {
+          console.log(error);
+          console.log(response);
+        },
+      );
     } catch (error) {
       console.log('error', error);
     }
@@ -74,10 +79,10 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
-    const { username, password } = data;
+    const { email, password } = data;
     const userExist = await this.userService.findOneByCondition({
       filter: {
-        username,
+        email,
         isVerify: true,
       },
     });
@@ -94,7 +99,7 @@ export class AuthService {
     const token = await this.jwtService.sign(
       {
         _id: userExist._id,
-        username: userExist.username,
+        email: userExist.email,
         role: userExist.role,
       },
       {
@@ -107,7 +112,7 @@ export class AuthService {
       token,
       user: {
         _id: userExist._id,
-        username: userExist.username,
+        email: userExist.email,
       },
     };
   }
