@@ -19,7 +19,7 @@ export class UserRepo implements BaseRepository<User> {
     return this.userModelMongo.findById(id).exec();
   }
   async findOne(payload?: BaseQueryPayload): Promise<User> {
-    return await this.userModelMongo.findOne(payload);
+    return await this.userModelMongo.findOne(payload).exec();
   }
   delete(entity: User): Promise<User> {
     throw new Error('Method not implemented.');

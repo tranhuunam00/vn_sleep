@@ -17,6 +17,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { AuthModule } from './modules/auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthModule } from './modules/auth/auth.module';
       load: [configuration],
       // envFilePath: ['.env.development.local', '.env.development'],
     }),
+    JwtModule.register({ secret: process.env.JWT_SECRET }),
     MongooseModule.forRoot(process.env.MONGO_DB_URL),
     UserModule,
     AuthModule,

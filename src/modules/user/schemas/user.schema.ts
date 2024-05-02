@@ -7,6 +7,9 @@ export type UserDocument = HydratedDocument<User>;
 @Schema()
 export class User {
   @Prop({ required: false })
+  _id: string;
+
+  @Prop({ required: false })
   username: string;
 
   @Prop()
@@ -30,7 +33,7 @@ export class User {
   @Prop({ default: false })
   isMember: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   isVerify: boolean;
 }
 
