@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../schemas/user.schema';
@@ -12,7 +12,10 @@ import {
 @Injectable()
 export class UserRepo implements BaseRepository<User> {
   constructor(@InjectModel(User.name) private userModelMongo: Model<User>) {}
-  async update(entity: Partial<User>, payload?: BaseQueryPayload): Promise<User> {
+  async update(
+    entity: Partial<User>,
+    payload?: BaseQueryPayload,
+  ): Promise<User> {
     return await this.userModelMongo.findOneAndUpdate(payload.filter, entity);
   }
   findById(id: string | number): Promise<User> {
@@ -29,7 +32,10 @@ export class UserRepo implements BaseRepository<User> {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = new this.userModelMongo(createUserDto);
+    const user = new this.userModelMongo({
+      _id: new mongoose.Types.ObjectId(),
+      ...createUserDto,
+    });
     return await user.save();
   }
 

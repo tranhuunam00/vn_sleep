@@ -3,20 +3,20 @@
 
 
 
-# POST http://localhost:3000/auth/register
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "namth1",
+  "password": "123456",
+  "name": "nam tran 1",
+  "role": "USER"
+}
+
+# POST http://localhost:3000/auth/login
 # Content-Type: application/json
 
 # {
 #   "username": "namth",
-#   "password": "123456",
-#   "name": "nam tran 1",
-#   "role": "USER"
+#   "password": "123456"
 # }
-
-POST http://localhost:3000/auth/login
-Content-Type: application/json
-
-{
-  "username": "namth",
-  "password": "123456"
-}
