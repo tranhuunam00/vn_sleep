@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { LoginDto } from '../dto/login.auth.dto';
@@ -14,7 +14,7 @@ export class AuthController {
   }
 
   @Get('/confirm')
-  async confirm(@Body() confirmData: ConfirmAuthDto) {
+  async confirm(@Query() confirmData: ConfirmAuthDto) {
     return await this.authService.confirm(confirmData);
   }
 

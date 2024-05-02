@@ -121,6 +121,17 @@ export class AuthService {
     const { token } = data;
     const dataToken = this.jwtService.decode(token);
 
-    console.log(dataToken);
+
+    await this.userService.update(
+      {
+        isVerify: true,
+      },
+      {
+        filter: {
+          email: dataToken.email,
+          isVerify: false,
+        },
+      },
+    );
   }
 }
