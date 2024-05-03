@@ -18,6 +18,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { TeleModule } from './modules/tele/tele.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,6 +30,7 @@ import { JwtModule } from '@nestjs/jwt';
     MongooseModule.forRoot(process.env.MONGO_DB_URL),
     UserModule,
     AuthModule,
+    TeleModule,
   ],
   controllers: [AppController],
   providers: [
