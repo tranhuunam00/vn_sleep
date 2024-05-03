@@ -121,7 +121,6 @@ export class AuthService {
     const { token } = data;
     const dataToken = this.jwtService.decode(token);
 
-
     await this.userService.update(
       {
         isVerify: true,
