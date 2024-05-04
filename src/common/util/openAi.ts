@@ -19,3 +19,20 @@ export async function getSLeepFromAI(data: string, input: string) {
     console.log(error);
   }
 }
+
+export async function chatWithOpenAI(input) {
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: 'user',
+          content: input,
+        },
+      ],
+      model: 'gpt-3.5-turbo',
+    });
+    return completion?.choices[0]?.message?.content;
+  } catch (error) {
+    console.log(error);
+  }
+}

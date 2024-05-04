@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as TelegramBot from 'node-telegram-bot-api';
 import { langchainLibEmbedded } from 'src/common/util/langchain';
-import { getSLeepFromAI } from 'src/common/util/openAi';
+import { chatWithOpenAI, getSLeepFromAI } from 'src/common/util/openAi';
 import sleepQaApp from 'src/common/util/sleepQA';
 
 @Injectable()
@@ -34,8 +34,11 @@ export class TeleService {
           `\n Câu ${index}: ${curr[0]['pageContent']} có trọng số là ${curr[1]}`;
         return prev;
       }, '');
-      if (!dataReturn) {
+      if (!dataReturn && +score < 0.3) {
         dataReturn = await getSLeepFromAI(stringData, msg.text);
+      }
+      if (!dataReturn && +score >= 0.3) {
+        dataReturn = await chatWithOpenAI(msg.text);
       }
       this.bot.sendMessage(chatId, dataReturn);
     });
