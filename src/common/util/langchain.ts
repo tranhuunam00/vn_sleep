@@ -26,7 +26,6 @@ class LangChainLib {
 
   async indexesOwnData(fileName: string) {
     this.embeddings = new OpenAIEmbeddings();
-    console.log(this.folderPath);
 
     const loader = new TextLoader(fileName);
     const docs = await loader.load();
@@ -70,11 +69,11 @@ class LangChainLib {
     return res[0].pageContent;
   }
 
-  async initQuestionWithScore(query) {
-    const res = await this.vectorstore?.similaritySearchWithScore(query);
+  async initQuestionWithScore(query: string) {
+    const res = await this.vectorstore?.similaritySearchWithScore(query, 4);
     // score luôn nhỏ hơn 1 vì tính toán  cosine_similarity(A, B) = (A . B) / (||A|| * ||B||)
     // cosine_distance(A, B) = 1 - cosine_similarity(A, B)
-    if (!res || !res[0]) return '-1 Không tìm thấy trong bộ câu hỏi';
+    if (!res || !res[0]) return [];
     return res;
   }
 }
