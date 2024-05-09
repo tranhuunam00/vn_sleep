@@ -11,6 +11,8 @@ const rooms: { name: string }[] = [];
 @WebSocketGateway({
   cors: {
     origin: '*',
+    methods: ['GET', 'POST'],
+    credentials: true,
   },
 })
 export class EventsGateway {
