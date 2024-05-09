@@ -19,6 +19,7 @@ import configuration from './config/configuration';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TeleModule } from './modules/tele/tele.module';
+import { EventsModule } from './modules/event/event.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,6 +27,7 @@ import { TeleModule } from './modules/tele/tele.module';
       load: [configuration],
       // envFilePath: ['.env.development.local', '.env.development'],
     }),
+    EventsModule,
     JwtModule.register({ secret: process.env.JWT_SECRET }),
     MongooseModule.forRoot(process.env.MONGO_DB_URL),
     UserModule,

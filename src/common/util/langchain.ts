@@ -4,6 +4,8 @@ import { RetrievalQAChain, loadQAStuffChain } from 'langchain/chains';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { CharacterTextSplitter } from 'langchain/text_splitter';
 import { config } from 'dotenv';
+import sleepQaApp from './sleepQA';
+import { chatWithOpenAI, getSLeepFromAI } from './openAi';
 config();
 
 class LangChainLib {
@@ -79,3 +81,34 @@ class LangChainLib {
 }
 
 export const langchainLibEmbedded = new LangChainLib('src/data');
+
+export const chatBotSleepWithLangChain = async (text: string) => {
+  const data = await langchainLibEmbedded.initQuestionWithScore(text);
+
+  const score = data[0][1];
+  const score2 = data[1][1];
+
+  console.log(data);
+  let dataReturn: string = '';
+  if (+score < 0.2 && +score < +score2 - 0.05) {
+    dataReturn = data[0][0]['pageContent'];
+  }
+
+  if (+score < 0.1) {
+    dataReturn = sleepQaApp.qa[data[0][0]['pageContent']];
+  }
+
+  const stringData = data.reduce((prev, curr, index) => {
+    prev =
+      prev +
+      `\n Câu ${index}: ${curr[0]['pageContent']} có trọng số là ${curr[1]}`;
+    return prev;
+  }, '');
+  if (!dataReturn && +score < 0.3) {
+    dataReturn = await getSLeepFromAI(stringData, text);
+  }
+  if (!dataReturn && +score >= 0.3) {
+    dataReturn = await chatWithOpenAI(text);
+  }
+  return dataReturn;
+};
