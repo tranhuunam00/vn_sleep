@@ -6,7 +6,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { chatBotSleepWithLangChain } from 'src/common/util/langchain';
 
-var rooms: { name: string }[] = [];
+const rooms: { name: string }[] = [];
 
 @WebSocketGateway({
   cors: {
