@@ -8,13 +8,7 @@ import { chatBotSleepWithLangChain } from 'src/common/util/langchain';
 
 const rooms: { name: string }[] = [];
 
-@WebSocketGateway({
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-})
+@WebSocketGateway({ transports: ['websocket'] })
 export class EventsGateway {
   @WebSocketServer()
   server: Server;
