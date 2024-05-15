@@ -8,7 +8,7 @@ class SleepQa {
     this.load();
   }
   async load() {
-    const file = await fs.readFileSync('src/data/sleepques.xlsx');
+    const file = await fs.readFileSync('src/data/sleepques2.xlsx');
     this.qa = await ExcelJs.jsonExcelSleep(file, 'Sheet1');
   }
 }
