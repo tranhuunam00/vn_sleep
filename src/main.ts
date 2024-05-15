@@ -15,8 +15,11 @@ async function bootstrap() {
 }
 
 const migrateData = async () => {
-  await langchainLibEmbedded.indexesOwnData('src/data/Sleep.txt');
-  const file = await fs.readFileSync('src/data/sleepques.xlsx');
-  await ExcelJs.readExcelSleep(file, 'Sheet1');
+  const file = await fs.readFileSync('src/data/sleepques2.xlsx');
+  await ExcelJs.readExcelSleep2(file, 'Sheet1');
+
+  await langchainLibEmbedded.indexesOwnData('src/data/Sleep2.txt');
 };
+
+// migrateData();
 bootstrap();
