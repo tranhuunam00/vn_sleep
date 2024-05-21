@@ -104,7 +104,7 @@ export const chatBotSleepWithLangChain = async (text: string) => {
   const stringData = data.reduce((prev, curr, index) => {
     prev =
       prev +
-      `\n Câu ${index}: ${curr[0]['pageContent']} có trọng số là ${curr[1]}`;
+      `\n Câu ${index}: ${curr[0]['pageContent']} có trọng số là ${(1 - +curr[1]) * 100}`;
     return prev;
   }, '');
   if (!dataReturn && +score < 0.3) {
