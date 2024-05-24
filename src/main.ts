@@ -15,10 +15,10 @@ async function bootstrap() {
 }
 
 const migrateData = async () => {
-  const file = await fs.readFileSync('src/data/sleepques2.xlsx');
+  const file = await fs.readFileSync('src/data/sleepques3.xlsx');
   await ExcelJs.readExcelSleep2(file, 'Sheet1');
 
-  await langchainLibEmbedded.indexesOwnData('src/data/Sleep2.txt');
+  await langchainLibEmbedded.indexesOwnData('src/data/Sleep3.txt');
 };
 
 // migrateData();
