@@ -93,12 +93,18 @@ export const chatBotSleepWithLangChain = async (text: string) => {
 
   if (+score < 0.1) {
     dataReturn = sleepQaApp.qa[data[0][0]['pageContent']];
-    return dataReturn;
+    return {
+      msg: dataReturn,
+      isOwn: true,
+    };
   }
 
   if (+score < 0.2 && +score < +score2 - 0.05) {
     dataReturn = data[0][0]['pageContent'];
-    return dataReturn;
+    return {
+      msg: dataReturn,
+      isOwn: true,
+    };
   }
 
   const stringData = data.reduce((prev, curr, index) => {
@@ -109,11 +115,20 @@ export const chatBotSleepWithLangChain = async (text: string) => {
   }, '');
   if (!dataReturn && +score < 0.3) {
     dataReturn = await getSLeepFromAI(stringData, text);
-    return dataReturn;
+    return {
+      msg: dataReturn,
+      isOwn: false,
+    };
   }
   if (!dataReturn && +score >= 0.3) {
     dataReturn = await chatWithOpenAI(text);
-    return dataReturn;
+    return {
+      msg: dataReturn,
+      isOwn: false,
+    };
   }
-  return dataReturn;
+  return {
+    msg: dataReturn,
+    isOwn: false,
+  };
 };
