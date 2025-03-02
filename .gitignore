@@ -3,6 +3,8 @@
 /node_modules
 /build
 
+
+mqtt_broken/node_modules
 # Logs
 logs
 *.log
