@@ -20,6 +20,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TeleModule } from './modules/tele/tele.module';
 import { EventsModule } from './modules/event/event.module';
+import { MqttController } from './modules/mqtt/mqtt.controller';
+import { MqttClientService } from './modules/mqtt/mqtt-client.service';
+import { IotModule } from './modules/iots/iots.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -32,9 +35,10 @@ import { EventsModule } from './modules/event/event.module';
     MongooseModule.forRoot(process.env.MONGO_DB_URL),
     UserModule,
     AuthModule,
+    IotModule,
     TeleModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, MqttController],
   providers: [
     {
       provide: APP_GUARD,
@@ -49,6 +53,7 @@ import { EventsModule } from './modules/event/event.module';
       provide: APP_INTERCEPTOR,
       useClass: ResponseConfigInterceptor,
     },
+    MqttClientService,
     AppService,
   ],
 })

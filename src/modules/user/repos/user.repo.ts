@@ -30,6 +30,9 @@ export class UserRepo implements BaseRepository<User> {
   getNewId(): Promise<string> {
     throw new Error('Method not implemented.');
   }
+  createAll(createUserDto: User[]): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = new this.userModelMongo({

@@ -4,6 +4,7 @@ export type BaseQueryPayload = BaseQueryMongoPayload;
 
 export interface BaseRepository<T> {
   create(entity: T): Promise<T>;
+  createAll(entity: T[]): Promise<boolean>;
   update(entity: Partial<T>, payload?: BaseQueryPayload): Promise<T>;
   find(payload?: BaseQueryPayload): Promise<T[]>;
   findById(id: string | number): Promise<T | undefined>;
