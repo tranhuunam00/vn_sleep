@@ -34,6 +34,7 @@ export class EventsGateway {
 
   @SubscribeMessage('chatBot')
   async handleMessage(client: Socket, data: any) {
+    console.log('data', data);
     const { message } = data;
     const roomName = `${client.id}__botChat`;
     console.log(message);

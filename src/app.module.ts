@@ -36,7 +36,7 @@ import { IotModule } from './modules/iots/iots.module';
     UserModule,
     AuthModule,
     IotModule,
-    TeleModule,
+    // TeleModule,
   ],
   controllers: [AppController, MqttController],
   providers: [

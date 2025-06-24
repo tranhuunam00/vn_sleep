@@ -6,6 +6,7 @@ import { CharacterTextSplitter } from 'langchain/text_splitter';
 import { config } from 'dotenv';
 import sleepQaApp from './sleepQA';
 import { chatWithOpenAI, getSLeepFromAI } from './openAi';
+import { chatWithGemini, getSleepFromGemini } from './gemini.service';
 config();
 
 class LangChainLib {
@@ -84,7 +85,6 @@ export const langchainLibEmbedded = new LangChainLib('src/data');
 
 export const chatBotSleepWithLangChain = async (text: string) => {
   const data = await langchainLibEmbedded.initQuestionWithScore(text);
-
   const score = data[0][1];
   const score2 = data[1][1];
 
@@ -108,25 +108,36 @@ export const chatBotSleepWithLangChain = async (text: string) => {
   }
 
   const stringData = data.reduce((prev, curr, index) => {
-    prev =
-      prev +
-      `\n Câu ${index}: ${curr[0]['pageContent']} có trọng số là ${(1 - +curr[1]) * 100}`;
+    prev += `\nCâu ${index}: ${curr[0]['pageContent']} có trọng số là ${(1 - +curr[1]) * 100}`;
     return prev;
   }, '');
+
   if (!dataReturn && +score < 0.3) {
-    dataReturn = await getSLeepFromAI(stringData, text);
+    try {
+      dataReturn = await getSLeepFromAI(stringData, text);
+    } catch (error) {
+      console.warn('[OpenAI failed – fallback to Gemini getSleepFromGemini]');
+      dataReturn = await getSleepFromGemini(stringData, text);
+    }
     return {
       msg: dataReturn,
       isOwn: false,
     };
   }
+
   if (!dataReturn && +score >= 0.3) {
-    dataReturn = await chatWithOpenAI(text);
+    try {
+      dataReturn = await chatWithOpenAI(text);
+    } catch (error) {
+      console.warn('[OpenAI chat failed – fallback to Gemini]');
+      dataReturn = await chatWithGemini(text);
+    }
     return {
       msg: dataReturn,
       isOwn: false,
     };
   }
+
   return {
     msg: dataReturn,
     isOwn: false,
