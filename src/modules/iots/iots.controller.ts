@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { IotService } from './iots.service';
 import { CreateIotDto } from './dto/create-iot.dto';
 import { Response } from 'express';
@@ -13,11 +13,20 @@ export class IotController {
   }
 
   @Get('export')
-  async exportExcel(@Res() res: Response) {
-    const filePath = await this.iotService.exportIotData();
+async exportExcel(
+  @Res() res: Response,
+  @Query('limit') limit?: string,
+  @Query('offset') offset?: string,
+  @Query('userId') userId?: string,
+) {
+  const filePath = await this.iotService.exportIotData({
+    limit: Number(limit) || 1000,
+    offset: Number(offset) || 0,
+    userId: userId || null,
+  });
 
-    res.download(filePath, 'users-data.xlsx', () => {
-      // fs.unlinkSync(filePath); // Xóa file sau khi tải
-    });
-  }
+  res.download(filePath, 'iot-data.xlsx', () => {
+    // fs.unlinkSync(filePath); // Nếu muốn xoá sau khi tải
+  });
+}
 }

@@ -37,7 +37,11 @@ export class IotRepo implements BaseRepository<Iot> {
     return true;
   }
 
-  async find(payload?: BaseQueryPayload): Promise<Iot[]> {
-    return await this.IotModelMongo.find(payload).exec();
+  async find(filter = {}, options: { limit?: number; skip?: number } = {}) {
+     const query = this.IotModelMongo.find(filter);
+     if (options.limit !== undefined) query.limit(options.limit);
+    if (options.skip !== undefined) query.skip(options.skip);
+    
+      return await query.exec();
   }
 }
