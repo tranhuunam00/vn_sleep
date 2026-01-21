@@ -45,6 +45,8 @@ export class EventsGateway {
         top_k: 8,
       };
 
+      console.log('payload', payload);
+
       const response = await axios.post(
         'http://222.255.214.218:8000/answer',
         payload,
