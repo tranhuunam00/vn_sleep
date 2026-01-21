@@ -13,20 +13,20 @@ export class IotController {
   }
 
   @Get('export')
-async exportExcel(
-  @Res() res: Response,
-  @Query('limit') limit?: string,
-  @Query('offset') offset?: string,
-  @Query('userId') userId?: string,
-) {
-  const filePath = await this.iotService.exportIotData({
-    limit: Number(limit) || 1000,
-    offset: Number(offset) || 0,
-    userId: userId || null,
-  });
+  async exportExcel(
+    @Res() res: Response,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+    @Query('userId') userId?: string,
+  ) {
+    const filePath = await this.iotService.exportIotData({
+      limit: Number(limit) || 1000,
+      offset: Number(offset) || 0,
+      userId: userId || null,
+    });
 
-  res.download(filePath, 'iot-data.xlsx', () => {
-    // fs.unlinkSync(filePath); // Nếu muốn xoá sau khi tải
-  });
-}
+    res.download(filePath, 'iot-data.xlsx', () => {
+      // fs.unlinkSync(filePath); // Nếu muốn xoá sau khi tải
+    });
+  }
 }

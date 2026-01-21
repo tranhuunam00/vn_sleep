@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import * as TelegramBot from 'node-telegram-bot-api';
-import { chatBotSleepWithLangChain } from 'src/common/util/langchain';
 
 @Injectable()
 export class TeleService {
@@ -13,7 +12,7 @@ export class TeleService {
       console.log('msg', msg);
       const chatId = msg.chat.id;
       //
-      const dataReturn = await chatBotSleepWithLangChain(msg.text);
+      const dataReturn = 1;
       this.bot.sendMessage(chatId, dataReturn);
     });
   }

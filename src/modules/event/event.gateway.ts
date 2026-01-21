@@ -3,8 +3,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import axios from 'axios';
 import { Server, Socket } from 'socket.io';
-import { chatBotSleepWithLangChain } from 'src/common/util/langchain';
 
 const rooms: { name: string }[] = [];
 
@@ -34,11 +34,37 @@ export class EventsGateway {
 
   @SubscribeMessage('chatBot')
   async handleMessage(client: Socket, data: any) {
-    console.log('data', data);
+    console.log('[chatBot] data:', data);
+
     const { message } = data;
     const roomName = `${client.id}__botChat`;
-    console.log(message);
-    const dataReturn = await chatBotSleepWithLangChain(message);
-    this.server.to(roomName).emit('newChatBotMessage', dataReturn);
+
+    try {
+      const payload = {
+        question: message,
+        top_k: 8,
+      };
+
+      const response = await axios.post(
+        'http://222.255.214.218:8000/answer',
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          timeout: 20000,
+        },
+      );
+
+      const dataReturn = response.data;
+
+      this.server.to(roomName).emit('newChatBotMessage', dataReturn?.answer);
+    } catch (error) {
+      console.error('[chatBot] API error:', error.message);
+
+      this.server
+        .to(roomName)
+        .emit('newChatBotMessage', 'Chatbot server is unavailable');
+    }
   }
 }
