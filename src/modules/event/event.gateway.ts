@@ -62,7 +62,7 @@ export class EventsGateway {
 
       const dataReturn = response.data;
 
-      console.log(' [chatBot]  dataReturn.data', dataReturn.data);
+      console.log(' [chatBot]  dataReturn.data', dataReturn);
 
       this.server.to(roomName).emit('newChatBotMessage', dataReturn?.answer);
     } catch (error) {
