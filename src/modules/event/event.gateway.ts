@@ -37,6 +37,8 @@ export class EventsGateway {
     console.log('[chatBot] data:', data);
 
     const { message } = data;
+
+    console.log('----chatBot----');
     const roomName = `${client.id}__botChat`;
 
     try {
