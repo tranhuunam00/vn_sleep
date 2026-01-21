@@ -58,6 +58,8 @@ export class EventsGateway {
 
       const dataReturn = response.data;
 
+      console.log(' [chatBot]  dataReturn.data', dataReturn.data);
+
       this.server.to(roomName).emit('newChatBotMessage', dataReturn?.answer);
     } catch (error) {
       console.error('[chatBot] API error:', error.message);
