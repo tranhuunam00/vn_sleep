@@ -34,7 +34,8 @@ export class IotService {
 
   // 🔍 Build filter
   const filter: any = {};
-  if (userId) filter.user = userId;
+   if (userId) filter.user = +userId;
+   console.log('Filter:', filter);
 
   // 🔥 Query có filter + limit + skip
   const datas = await this.iotRepo.find(filter, {
